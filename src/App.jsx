@@ -8,6 +8,7 @@ import banner from "./assets/banner.png"
 import { Galeria } from "./components/Galeria";
 import fotos from "./fotos.json";
 import { ModalZoom } from "./components/ModalZoom";
+import { Pie } from "./components/Pie";
 
 const FondoGradiente = styled.div`
 background: linear-gradient(175deg, #041833 4.16%, #04244F 48%, #154580 96.76%);
@@ -32,22 +33,48 @@ const ContenidoGaleria = styled.section`
 const App = () => {
   const [fotosDeGaleria, setFotosDeGaleria] = useState(fotos);
   const [fotoSeleccionada, setFotoSeleccionada] = useState(null);
+  const [consulta, setConsulta] = useState("");
+
+  const alAlternarFavorito = (foto) => {
+
+    if(foto.id === fotoSeleccionada?.id) {
+      setFotoSeleccionada({
+        ...fotoSeleccionada,
+        favorita: !foto.favorita
+      })
+    }
+
+    setFotosDeGaleria(fotosDeGaleria.map(fotoDeGaleria => {
+      return {
+        ...fotoDeGaleria,
+        favorita: fotoDeGaleria.id === foto.id ? !foto.favorita : fotoDeGaleria.favorita
+      }
+    }))
+  }
 
   return (
     <>
       <FondoGradiente>
         <GlobalStyle />
         <AppContainter>
-          <Cabecera />
+          <Cabecera setConsulta={setConsulta} />
           <MainContainer>
             <BarraLateral />
             <ContenidoGaleria>
               <Banner texto={"La galería más completa de fotos del espacio"} backgroundImage={banner} />
-              <Galeria alSeleccionarFoto={foto => setFotoSeleccionada(foto)} fotos={fotosDeGaleria} />
+              <Galeria 
+              alSeleccionarFoto={foto => setFotoSeleccionada(foto)} 
+              fotos={fotosDeGaleria} 
+              alAlternarFavorito={alAlternarFavorito}
+              consulta={consulta} />
             </ContenidoGaleria>
           </MainContainer>
         </AppContainter>
-        <ModalZoom foto={fotoSeleccionada} />
+        <ModalZoom 
+        foto={fotoSeleccionada} 
+        alCerrar={() => setFotoSeleccionada(null)}
+        alAlternarFavorito = {alAlternarFavorito}/>
+        <Pie />
       </FondoGradiente>
     </>
   )

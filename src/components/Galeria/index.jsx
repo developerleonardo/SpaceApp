@@ -20,7 +20,7 @@ const ImagenesContainer = styled.section`
 `
 
 
-const Galeria = ({ fotos = [], alSeleccionarFoto }) => {
+const Galeria = ({ fotos = [], alSeleccionarFoto, alAlternarFavorito, consulta }) => {
     return (
         <>
             <Tags />
@@ -28,7 +28,11 @@ const Galeria = ({ fotos = [], alSeleccionarFoto }) => {
                 <SeccionFluida>
                     <Titulo>Navegue por la galería</Titulo>
                     <ImagenesContainer>
-                        {fotos.map(foto => <Imagen
+                        {fotos.filter(foto => {
+                            return consulta === "" || foto.titulo.toLowerCase().includes(consulta.toLowerCase())
+                        })
+                            .map(foto => <Imagen
+                            alAlternarFavorito = {alAlternarFavorito}
                             alSolicitarZoom={alSeleccionarFoto}
                             key={foto.id}
                             foto={foto} />)
