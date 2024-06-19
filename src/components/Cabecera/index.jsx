@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { CampoTexto } from "../CampoTexto";
+import { useContext } from "react";
+import { GlobalContext } from "../../Context/GlobalContext";
 
 const HeaderEstilizado = styled.header`
     padding: 60px 0;
@@ -10,7 +12,8 @@ const HeaderEstilizado = styled.header`
     }
 `
 
-const Cabecera = ({setConsulta}) => {
+const Cabecera = () => {
+    const {setConsulta} = useContext(GlobalContext);
     return (
         <>
             <HeaderEstilizado>
