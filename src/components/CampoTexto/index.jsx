@@ -1,6 +1,7 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { styled } from "styled-components"
 import search from './search.png'
+import { GlobalContext } from "../../Context/GlobalContext";
 const ContainerEstilizado = styled.div`
     position: relative;
     display: inline-block;
@@ -26,9 +27,10 @@ const IconoLupa = styled.img`
     width: 38px !important;
     height: 38px;
 `;
-const CampoTexto = ({ setConsulta }) => {
+const CampoTexto = () => {
 
     const cajaConsulta = useRef(null);
+    const { dispatch } = useContext(GlobalContext)
 
     return (
         <ContainerEstilizado>
@@ -36,7 +38,7 @@ const CampoTexto = ({ setConsulta }) => {
                 ref={cajaConsulta}
                 placeholder="Busca una foto" />
             <IconoLupa src={search} alt="ícono de lupa" onClick={() => {
-                setConsulta(cajaConsulta.current.value);
+                dispatch({ type: 'SET_CONSULTA', payload: cajaConsulta.current.value })
             }
             } />
         </ContainerEstilizado>
